@@ -31,4 +31,11 @@ class TestApiCart:
 
     @allure.story("Поиск")
     def test_search_product(self):
-        assert self.api.search_product("Samsung").status_code == 200
+        query = "Samsung"
+        resp = self.api.search_product(query)
+
+        with allure.step("Проверка статуса"):
+            assert resp.status_code == 200
+
+        with allure.step("Проверка содержимого ответа"):
+            assert query in resp.text, f"Слово {query} не найдено в ответе сервера"
